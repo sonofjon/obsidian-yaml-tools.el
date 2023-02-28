@@ -1,16 +1,18 @@
-#+TITLE: obsidian-tools.el
+#+TITLE: obsidian-tools
 
 #+PROPERTY: LOGGING nil
 
 # Note: This readme works with the org-make-toc <https://github.com/alphapapa/org-make-toc> package, which automatically updates the table of contents.
 
-[[https://melpa.org/#/package-name][file:https://melpa.org/packages/package-name-badge.svg]] [[https://stable.melpa.org/#/package-name][file:https://stable.melpa.org/packages/package-name-badge.svg]]
+# [[https://melpa.org/#/package-name][file:https://melpa.org/packages/package-name-badge.svg]] [[https://stable.melpa.org/#/package-name][file:https://stable.melpa.org/packages/package-name-badge.svg]]
 
 Helper functions for Obsidian in Emacs.
 
 * Screenshots
 
-.
+# This screenshot shows how to frobnicate the fripulator:
+
+# [[screenshot1.png]]
 
 * Contents                                                         :noexport:
 :PROPERTIES:
@@ -32,6 +34,7 @@ Helper functions for Obsidian in Emacs.
 
 ** MELPA
 
+# If you installed from MELPA, you're done.  Just run one of the commands below.
 Not available yet.
 
 ** Manual
@@ -43,7 +46,7 @@ Not available yet.
   Then put this file in your load-path, and put this in your init file:
 
   #+BEGIN_SRC elisp
-(require 'package-name)
+(require 'obsidian-tools)
   #+END_SRC
 
 * Usage
@@ -62,6 +65,7 @@ Not available yet.
 
 ** Tips
 
+# + You can customize settings in the =package-name= group.
 + None.
 
 * Changelog
