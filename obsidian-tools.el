@@ -133,7 +133,6 @@ filename."
 
 ;;;;; Private
 
-;;;###autoload
 (defun obsidian-tools--buffer-front-matter-start ()
   "Return the starting position of the YAML front matter in the
 current buffer.
@@ -144,7 +143,6 @@ If no front matter is found, return nil."
     (when (and (looking-at "^---") (forward-line))
       (point))))
 
-;;;###autoload
 (defun obsidian-tools--buffer-front-matter-end ()
   "Return the ending position of the YAML front matter in the
 current buffer.
