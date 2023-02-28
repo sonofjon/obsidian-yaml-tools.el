@@ -41,7 +41,7 @@
 (require 'yaml)
 
 ;;;###autoload
-(defun aj8/obsidian--buffer-front-matter-start ()
+(defun obsidian-tools--buffer-front-matter-start ()
   "Return the starting position of the YAML front matter in the
 current buffer.
 
@@ -52,7 +52,7 @@ If no front matter is found, return nil."
       (point))))
 
 ;;;###autoload
-(defun aj8/obsidian--buffer-front-matter-end ()
+(defun obsidian-tools--buffer-front-matter-end ()
   "Return the ending position of the YAML front matter in the
 current buffer.
 
@@ -80,7 +80,7 @@ of the front matter."
       (user-error "There is no front matter in this file!"))))
 
 ;;;###autoload
-(defun aj8/obsidian-file-to-front-matter-title ()
+(defun obsidian-tools-file-to-front-matter-title ()
   "Change the title in the YAML front matter of the current buffer
 to be identical to the filename of the buffer.
 
@@ -111,7 +111,7 @@ fields."
       (user-error "There is no front matter in this file!"))))
 
 ;;;###autoload
-(defun aj8/obsidian-front-matter-title-to-file ()
+(defun obsidian-tools-front-matter-title-to-file ()
   "Rename the current file using the title in the front matter as
 filename."
   (interactive)
