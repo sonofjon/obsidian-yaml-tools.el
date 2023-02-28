@@ -10,9 +10,7 @@ Helper functions for Obsidian in Emacs.
 
 * Screenshots
 
-This screenshot shows how to frobnicate the fripulator:
-
-[[screenshot1.png]]
+.
 
 * Contents                                                         :noexport:
 :PROPERTIES:
@@ -34,14 +32,13 @@ This screenshot shows how to frobnicate the fripulator:
 
 ** MELPA
 
-If you installed from MELPA, you're done.  Just run one of the commands below.
+Not available yet.
 
 ** Manual
 
   Install these required packages:
 
-  + =foo=
-  + =bar=
+  + =yaml=
 
   Then put this file in your load-path, and put this in your init file:
 
@@ -56,45 +53,33 @@ If you installed from MELPA, you're done.  Just run one of the commands below.
 
   Run one of these commands:
 
-  + =package-name-command=: Frobnicate the flange.
+  + =obsidian-tools-file-to-front-matter-title= : Change the title in the YAML
+  front matter of the current buffer to be identical to the filename of the
+  buffer.
+
+  + =obsidian-tools-front-matter-title-to-file=' : Rename the current file
+  using the title in the front matter as filename.
 
 ** Tips
 
-+ You can customize settings in the =package-name= group.
++ None.
 
 * Changelog
 :PROPERTIES:
 :TOC:      :depth 0
 :END:
 
-** 1.1.0
-
-*Additions*
-+  Add command =package-name-debarnacle= to de-barnacle the hull.
-
-*Changes*
-+ Command =package-name-anchor= now takes an argument, =weigh= or =let-go=.
-
-*Internal*
-+  Rewrote input parsing.
-+  Factored out anchor-weighing.
-
-** 1.0.1
-
-*Fixes*
-+  Ensure anchor is secure before returning from =package-name-anchor=.
-
-** 1.0.0
+** 0.1
 
 Initial release.
 
 * Credits
 
-  This package would not have been possible without the following packages: [[https://example.com/foo.el][foo]] which showed me how to bifurcate, and [[https://example.com/bar.el][bar]], which takes care of flanges.
+  This package was inspired by: [[https://github.com./licht1stein/obsidian.el]][obsidian.el].
 
 * Development
 
-Bug reports, feature requests, suggestions — /oh my/!
+Bug reports, feature requests, suggestions, are welcome.
 
 * License
 
