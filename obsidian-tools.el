@@ -63,30 +63,35 @@ If no front matter is found, return nil."
                (re-search-forward "^---" nil t 2))
       (- (point) 3))))
 
+(defun obsidian-tools--buffer-front-matter ()
+  "Return the front matter string at the beginning of the current buffer.
+
+The front matter is expected to be enclosed in a pair of '---'
+lines at the beginning of the buffer. If the buffer does not
+contain front matter, signal an error.
+
+The function uses `obsidian--buffer-front-matter-start' and
+`obsidian--buffer-front-matter-end' to determine the boundaries
+of the front matter."
+  (let ((fm-start (obsidian-tools--buffer-front-matter-start))
+        (fm-end (obsidian-tools--buffer-front-matter-end)))
+    (if (and fm-start fm-end (> fm-end fm-start))
+        (buffer-substring-no-properties fm-start fm-end)
+      (user-error "There is no front matter in this file!"))))
+
 ;;;###autoload
 (defun aj8/obsidian-file-to-front-matter-title ()
   "Change the title in the YAML front matter of the current buffer
 to be identical to the filename of the buffer.
 
-The YAML front matter is expected to be enclosed in a pair of
-'---' lines at the beginning of the buffer. If the buffer does
-not contain YAML front matter, signal an error.
-
 The function parses the YAML front matter using
 `yaml-parse-string', replaces the title field with the
 filename, and then rewrites the YAML front matter at the
 beginning of the buffer, preserving the original order of the
-fields.
-
-The function uses `obsidian--buffer-front-matter-start' and
-`obsidian--buffer-front-matter-end' to determine the boundaries
-of the YAML front matter."
+fields."
   (interactive)
   (let* ((base (file-name-base (buffer-file-name)))
-         (fm-start (aj8/obsidian--buffer-front-matter-start))
-         (fm-end (aj8/obsidian--buffer-front-matter-end))
-         (fm-str (buffer-substring-no-properties fm-start fm-end))
-         (fm-hash (yaml-parse-string fm-str)))
+         (fm-hash (yaml-parse-string (obsidian-tools--buffer-front-matter))))
     (if fm-hash
           ;; In order to preserve the order of the fields in the front
           ;; matter we create a copy of the original hash table by iterating
@@ -110,11 +115,7 @@ of the YAML front matter."
   "Rename the current file using the title in the front matter as
 filename."
   (interactive)
-  (let* ((file (buffer-file-name))
-         (fm-start (aj8/obsidian--buffer-front-matter-start))
-         (fm-end (aj8/obsidian--buffer-front-matter-end))
-         (fm-str (buffer-substring-no-properties fm-start fm-end))
-         (fm-hash (yaml-parse-string fm-str)))
+  (let ((fm-hash (yaml-parse-string (obsidian-tools--buffer-front-matter))))
     (if fm-hash
         (let ((title (gethash 'title fm-hash)))
           (my/rename-file-and-buffer (concat title ".md")))
