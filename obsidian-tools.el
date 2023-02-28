@@ -1,37 +1,74 @@
 ;;; obsidian-tools.el --- Obsidian Notes tools -*- coding: utf-8; lexical-binding: t; -*-
 
-;; Copyright (c) 2023 Andreas Jonsson <ajdev8@gmail.com>
+;; Copyright (c) 2023 Andreas Jonsson
 
-;; Author: Andreas Jonsson
-;; URL: https://github.com./sonofjon/obsidian-tools.el
+;; Author: Andreas Jonsson <ajdev8@gmail.com>
+;; URL: https://github.com/sonofjon/obsidian-tools.el
 ;; Package-Version: 
 ;; Package-Commit: 
+;; Package-Requires: ((emacs "27.2") (yaml "0.5.1"))
 ;; Keywords: obsidian, pkm, convenience
 ;; Version: 0.1
-;; Package-Requires: ((emacs "27.2") (yaml "0.5.1"))
 
 ;; This file is NOT part of GNU Emacs.
 
 ;;; License:
+
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation; either version 3, or (at your option)
-;; any later version.
-;;
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-;;
-;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to the
-;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-;; Boston, MA 02110-1301, USA.
 
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
+
 ;; Obsidian-tools.el provides a number of useful functions that let you
-;; manipulate the front matter of your Obsidian Notes vault.
+;; manipulate the front matter of your Obsidian notes.
+
+;;;; Installation
+
+;;;;; MELPA
+
+;; Not yet available.
+
+;;;;; Manual
+
+;; Install these required packages:
+
+;; + yaml
+
+;; Then put this file in your load-path, and put this in your init
+;; file:
+
+;; (require 'obsidian-tools)
+
+;;;; Usage
+
+;; Run one of these commands:
+
+;; `obsidian-tools-file-to-front-matter-title' : Change the title in the
+;; YAML front matter of the current buffer to be identical to the filename
+;; of the buffer.
+
+;; `obsidian-tools-front-matter-title-to-file' : Rename the current file
+;; using the title in the front matter as filename.
+
+;;;; Tips
+
+;; + You can customize settings in the `package-name' group (not yet).
+
+;;;; Credits
+
+;; This package was inspired by: obsidian.el[1].
+;;
+;;  [1] https://github.com./licht1stein/obsidian.el
 
 ;; TODO:
 ;;   - Add my/rename-file-and-buffer
