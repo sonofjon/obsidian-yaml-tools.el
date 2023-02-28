@@ -77,6 +77,20 @@
 ;;; Code:
 (require 'yaml)
 
+;;;; Customization
+
+;;;; Variables
+
+;;;;; Keymaps
+
+;;;; Commands
+
+;;;; Functions
+
+;;;;; Public
+
+;;;;; Private
+
 ;;;###autoload
 (defun obsidian-tools--buffer-front-matter-start ()
   "Return the starting position of the YAML front matter in the
@@ -158,5 +172,8 @@ filename."
           (my/rename-file-and-buffer (concat title ".md")))
       (user-error "There is no front matter in this file!"))))
 
+;;;; Footer
+
 (provide 'obsidian-tools)
+
 ;;; obsidian-tools.el ends here
