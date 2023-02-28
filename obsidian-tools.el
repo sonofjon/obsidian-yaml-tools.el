@@ -85,6 +85,48 @@
 
 ;;;; Commands
 
+;;;###autoload
+(defun obsidian-tools-file-to-front-matter-title ()
+  "Change the title in the YAML front matter of the current buffer
+to be identical to the filename of the buffer.
+
+The function parses the YAML front matter using
+`yaml-parse-string', replaces the title field with the
+filename, and then rewrites the YAML front matter at the
+beginning of the buffer, preserving the original order of the
+fields."
+  (interactive)
+  (let* ((base (file-name-base (buffer-file-name)))
+         (fm-hash (yaml-parse-string (obsidian-tools--buffer-front-matter))))
+    (if fm-hash
+          ;; In order to preserve the order of the fields in the front
+          ;; matter we create a copy of the original hash table by iterating
+          ;; over its keys and values, and later use the same order with
+          ;; `maphash' to insert the fields bask into the front matter.
+        (let ((fm-hash-copy (make-hash-table :test 'equal)))
+          (cl-loop for key in (hash-table-keys fm-hash)
+                   for value in (hash-table-values fm-hash)
+                   do (puthash key value fm-hash-copy))
+          (puthash 'title base fm-hash-copy)
+          (goto-char fm-start)
+          (delete-region fm-start fm-end)
+          (maphash (lambda (key value)
+                     (insert (format "%s: %s\n" key value)))
+                   fm-hash-copy)
+          (message "Front matter title updated: '%s'" base))
+      (user-error "There is no front matter in this file!"))))
+
+;;;###autoload
+(defun obsidian-tools-front-matter-title-to-file ()
+  "Rename the current file using the title in the front matter as
+filename."
+  (interactive)
+  (let ((fm-hash (yaml-parse-string (obsidian-tools--buffer-front-matter))))
+    (if fm-hash
+        (let ((title (gethash 'title fm-hash)))
+          (my/rename-file-and-buffer (concat title ".md")))
+      (user-error "There is no front matter in this file!"))))
+
 ;;;; Functions
 
 ;;;;; Public
@@ -128,48 +170,6 @@ of the front matter."
         (fm-end (obsidian-tools--buffer-front-matter-end)))
     (if (and fm-start fm-end (> fm-end fm-start))
         (buffer-substring-no-properties fm-start fm-end)
-      (user-error "There is no front matter in this file!"))))
-
-;;;###autoload
-(defun obsidian-tools-file-to-front-matter-title ()
-  "Change the title in the YAML front matter of the current buffer
-to be identical to the filename of the buffer.
-
-The function parses the YAML front matter using
-`yaml-parse-string', replaces the title field with the
-filename, and then rewrites the YAML front matter at the
-beginning of the buffer, preserving the original order of the
-fields."
-  (interactive)
-  (let* ((base (file-name-base (buffer-file-name)))
-         (fm-hash (yaml-parse-string (obsidian-tools--buffer-front-matter))))
-    (if fm-hash
-          ;; In order to preserve the order of the fields in the front
-          ;; matter we create a copy of the original hash table by iterating
-          ;; over its keys and values, and later use the same order with
-          ;; `maphash' to insert the fields bask into the front matter.
-        (let ((fm-hash-copy (make-hash-table :test 'equal)))
-          (cl-loop for key in (hash-table-keys fm-hash)
-                   for value in (hash-table-values fm-hash)
-                   do (puthash key value fm-hash-copy))
-          (puthash 'title base fm-hash-copy)
-          (goto-char fm-start)
-          (delete-region fm-start fm-end)
-          (maphash (lambda (key value)
-                     (insert (format "%s: %s\n" key value)))
-                   fm-hash-copy)
-          (message "Front matter title updated: '%s'" base))
-      (user-error "There is no front matter in this file!"))))
-
-;;;###autoload
-(defun obsidian-tools-front-matter-title-to-file ()
-  "Rename the current file using the title in the front matter as
-filename."
-  (interactive)
-  (let ((fm-hash (yaml-parse-string (obsidian-tools--buffer-front-matter))))
-    (if fm-hash
-        (let ((title (gethash 'title fm-hash)))
-          (my/rename-file-and-buffer (concat title ".md")))
       (user-error "There is no front matter in this file!"))))
 
 ;;;; Footer
