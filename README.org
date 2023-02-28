@@ -35,15 +35,15 @@ Helper functions for Obsidian in Emacs.
 ** MELPA
 
 # If you installed from MELPA, you're done.  Just run one of the commands below.
-Not available yet.
+  Not available yet.
 
 ** Manual
 
-  Install these required packages:
+Install these required packages:
 
   + =yaml=
 
-  Then put this file in your load-path, and put this in your init file:
+Then put this file in your load-path, and put this in your init file:
 
   #+BEGIN_SRC elisp
 (require 'obsidian-tools)
@@ -54,19 +54,16 @@ Not available yet.
 :TOC:      :depth 0
 :END:
 
-  Run one of these commands:
+Run one of these commands:
 
-  + =obsidian-tools-file-to-front-matter-title= : Change the title in the YAML
-  front matter of the current buffer to be identical to the filename of the
-  buffer.
+  + =obsidian-tools-file-to-front-matter-title= : Change the title in the YAML front matter of the current buffer to be identical to the filename of the buffer.
 
-  + =obsidian-tools-front-matter-title-to-file=' : Rename the current file
-  using the title in the front matter as filename.
+  + =obsidian-tools-front-matter-title-to-file=' : Rename the current file using the title in the front matter as filename.
 
 ** Tips
 
 # + You can customize settings in the =package-name= group.
-+ None.
+  + None.
 
 * Changelog
 :PROPERTIES:
@@ -79,7 +76,7 @@ Initial release.
 
 * Credits
 
-  This package was inspired by: [[https://github.com./licht1stein/obsidian.el]][obsidian.el].
+This package was inspired by: [[https://github.com./licht1stein/obsidian.el][obsidian.el]].
 
 * Development
 
