@@ -56,7 +56,7 @@ Then put this file in your load-path, and put this in your init file:
 
 Run one of these commands:
 
-  + =obsidian-tools-file-to-front-matter-title= : Change the title in the YAML front matter of the current buffer to be identical to the filename of the buffer.
+  + =obsidian-tools-file-to-front-matter-title= : Change the title in the YAML front matter of the current buffer to match the filename of the buffer.
 
   + =obsidian-tools-front-matter-title-to-file=' : Rename the current file using the title in the front matter as filename.
 

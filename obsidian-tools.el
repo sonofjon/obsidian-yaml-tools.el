@@ -54,7 +54,7 @@
 ;; Run one of these commands:
 
 ;; `obsidian-tools-file-to-front-matter-title' : Change the title in the
-;; YAML front matter of the current buffer to be identical to the filename
+;; YAML front matter of the current buffer to match the filename
 ;; of the buffer.
 
 ;; `obsidian-tools-front-matter-title-to-file' : Rename the current file
@@ -88,7 +88,7 @@
 ;;;###autoload
 (defun obsidian-tools-file-to-front-matter-title ()
   "Change the title in the YAML front matter of the current buffer
-to be identical to the filename of the buffer.
+to match the filename of the buffer.
 
 The function parses the YAML front matter using
 `yaml-parse-string', replaces the title field with the
