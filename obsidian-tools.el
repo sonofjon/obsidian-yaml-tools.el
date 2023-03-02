@@ -52,9 +52,9 @@
 
 ;; Run one of these commands:
 
-;; `obsidian-tools-file-to-front-matter-title' : Copy title from filename to front matter.
+;; `obsidian-tools-file-to-yaml-title' : Copy title from filename to front matter.
 
-;; `obsidian-tools-front-matter-title-to-file' : Rename file to match the front matter title.
+;; `obsidian-tools-yaml-title-to-file' : Rename file to match the front matter title.
 
 ;;;; Tips
 
@@ -82,7 +82,7 @@
 ;;;; Commands
 
 ;;;###autoload
-(defun obsidian-tools-file-to-front-matter-title ()
+(defun obsidian-tools-file-to-yaml-title ()
   "Copy title from filename to front matter.
 
 The function changes the title in the YAML front matter of the
@@ -94,7 +94,7 @@ and then rewrites the YAML front matter at the beginning of the
 buffer, preserving the original order of the fields."
   (interactive)
   (let* ((base (file-name-base (buffer-file-name)))
-         (fm-hash (yaml-parse-string (obsidian-tools--buffer-front-matter))))
+         (fm-hash (yaml-parse-string (obsidian-tools--buffer-yaml))))
     (if fm-hash
           ;; In order to preserve the order of the fields in the front
           ;; matter we create a copy of the original hash table by iterating
@@ -114,13 +114,13 @@ buffer, preserving the original order of the fields."
       (user-error "There is no front matter in this file!"))))
 
 ;;;###autoload
-(defun obsidian-tools-front-matter-title-to-file ()
+(defun obsidian-tools-yaml-title-to-file ()
   "Rename file to match the front matter title.
 
 The function renames the current file using the title in the YAML
 front matter as filename."
   (interactive)
-  (let ((fm-hash (yaml-parse-string (obsidian-tools--buffer-front-matter))))
+  (let ((fm-hash (yaml-parse-string (obsidian-tools--buffer-yaml))))
     (if fm-hash
         (let ((title (gethash 'title fm-hash)))
           (my/rename-file-and-buffer (concat title ".md")))
@@ -132,7 +132,7 @@ front matter as filename."
 
 ;;;;; Private
 
-(defun obsidian-tools--buffer-front-matter-start ()
+(defun obsidian-tools--buffer-yaml-start ()
   "Return the starting position of the YAML front matter in the current buffer.
 
 If no front matter is found, return nil."
@@ -141,7 +141,7 @@ If no front matter is found, return nil."
     (when (and (looking-at "^---") (forward-line))
       (point))))
 
-(defun obsidian-tools--buffer-front-matter-end ()
+(defun obsidian-tools--buffer-yaml-end ()
   "Return the ending position of the YAML front matter in the current buffer.
 
 If no front matter is found, return nil."
@@ -151,7 +151,7 @@ If no front matter is found, return nil."
                (re-search-forward "^---" nil t 2))
       (- (point) 3))))
 
-(defun obsidian-tools--buffer-front-matter ()
+(defun obsidian-tools--buffer-yaml ()
   "Return front matter string.
 
 The function returns the YAML front matter at the beginning of
@@ -159,11 +159,11 @@ the current buffer.  The front matter is expected to be enclosed
 in a pair of '---' lines at the beginning of the buffer.  If the
 buffer does not contain front matter, signal an error.
 
-The function uses `obsidian--buffer-front-matter-start' and
-`obsidian--buffer-front-matter-end' to determine the boundaries
+The function uses `obsidian--buffer-yaml-start' and
+`obsidian--buffer-yaml-end' to determine the boundaries
 of the front matter."
-  (let ((fm-start (obsidian-tools--buffer-front-matter-start))
-        (fm-end (obsidian-tools--buffer-front-matter-end)))
+  (let ((fm-start (obsidian-tools--buffer-yaml-start))
+        (fm-end (obsidian-tools--buffer-yaml-end)))
     (if (and fm-start fm-end (> fm-end fm-start))
         (buffer-substring-no-properties fm-start fm-end)
       (user-error "There is no front matter in this file!"))))
