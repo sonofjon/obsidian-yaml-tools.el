@@ -30,7 +30,7 @@
 ;;; Commentary:
 
 ;; Obsidian-tools.el provides a number of useful functions that let you
-;; manipulate the front matter of your Obsidian notes.
+;; manipulate the front matter of Obsidian notes.
 
 ;;;; Installation
 
@@ -44,8 +44,7 @@
 
 ;; + yaml
 
-;; Then put this file in your load-path, and put this in your init
-;; file:
+;; Then put this file in your load-path, and put this in your init file:
 
 ;; (require 'obsidian-tools)
 
@@ -53,12 +52,9 @@
 
 ;; Run one of these commands:
 
-;; `obsidian-tools-file-to-front-matter-title' : Change the title in the
-;; YAML front matter of the current buffer to match the filename
-;; of the buffer.
+;; `obsidian-tools-file-to-front-matter-title' : Copy title from filename to front matter.
 
-;; `obsidian-tools-front-matter-title-to-file' : Rename the current file
-;; using the title in the front matter as filename.
+;; `obsidian-tools-front-matter-title-to-file' : Rename file to match the front matter title.
 
 ;;;; Tips
 
@@ -87,14 +83,15 @@
 
 ;;;###autoload
 (defun obsidian-tools-file-to-front-matter-title ()
-  "Change the title in the YAML front matter of the current buffer
-to match the filename of the buffer.
+  "Copy title from filename to front matter.
+
+The function changes the title in the YAML front matter of the
+current buffer to match the filename of the buffer.
 
 The function parses the YAML front matter using
-`yaml-parse-string', replaces the title field with the
-filename, and then rewrites the YAML front matter at the
-beginning of the buffer, preserving the original order of the
-fields."
+`yaml-parse-string', replaces the title field with the filename,
+and then rewrites the YAML front matter at the beginning of the
+buffer, preserving the original order of the fields."
   (interactive)
   (let* ((base (file-name-base (buffer-file-name)))
          (fm-hash (yaml-parse-string (obsidian-tools--buffer-front-matter))))
@@ -118,8 +115,10 @@ fields."
 
 ;;;###autoload
 (defun obsidian-tools-front-matter-title-to-file ()
-  "Rename the current file using the title in the front matter as
-filename."
+  "Rename file to match the front matter title.
+
+The function renames the current file using the title in the YAML
+front matter as filename."
   (interactive)
   (let ((fm-hash (yaml-parse-string (obsidian-tools--buffer-front-matter))))
     (if fm-hash
@@ -134,8 +133,7 @@ filename."
 ;;;;; Private
 
 (defun obsidian-tools--buffer-front-matter-start ()
-  "Return the starting position of the YAML front matter in the
-current buffer.
+  "Return the starting position of the YAML front matter in the current buffer.
 
 If no front matter is found, return nil."
   (save-excursion
@@ -144,8 +142,7 @@ If no front matter is found, return nil."
       (point))))
 
 (defun obsidian-tools--buffer-front-matter-end ()
-  "Return the ending position of the YAML front matter in the
-current buffer.
+  "Return the ending position of the YAML front matter in the current buffer.
 
 If no front matter is found, return nil."
   (save-excursion
@@ -155,11 +152,12 @@ If no front matter is found, return nil."
       (- (point) 3))))
 
 (defun obsidian-tools--buffer-front-matter ()
-  "Return the front matter string at the beginning of the current buffer.
+  "Return front matter string.
 
-The front matter is expected to be enclosed in a pair of '---'
-lines at the beginning of the buffer.  If the buffer does not
-contain front matter, signal an error.
+The function returns the YAML front matter at the beginning of
+the current buffer.  The front matter is expected to be enclosed
+in a pair of '---' lines at the beginning of the buffer.  If the
+buffer does not contain front matter, signal an error.
 
 The function uses `obsidian--buffer-front-matter-start' and
 `obsidian--buffer-front-matter-end' to determine the boundaries
