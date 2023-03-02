@@ -4,8 +4,8 @@
 
 ;; Author: Andreas Jonsson <ajdev8@gmail.com>
 ;; URL: https://github.com/sonofjon/obsidian-tools.el
-;; Package-Version: 
-;; Package-Commit: 
+;; Package-Version:
+;; Package-Commit:
 ;; Package-Requires: ((emacs "27.2") (yaml "0.5.1"))
 ;; Keywords: obsidian, pkm, convenience
 ;; Version: 0.1
@@ -158,7 +158,7 @@ If no front matter is found, return nil."
   "Return the front matter string at the beginning of the current buffer.
 
 The front matter is expected to be enclosed in a pair of '---'
-lines at the beginning of the buffer. If the buffer does not
+lines at the beginning of the buffer.  If the buffer does not
 contain front matter, signal an error.
 
 The function uses `obsidian--buffer-front-matter-start' and
