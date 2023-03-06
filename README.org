@@ -62,8 +62,9 @@ Run one of these commands:
 
 ** Tips
 
-# + You can customize settings in the =package-name= group.
-  + None.
+You can customize settings in the =package-name= group.
+
+  + =obsidian-tools-time-string-format= : Time string format.
 
 * Changelog
 :PROPERTIES:

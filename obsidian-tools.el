@@ -58,7 +58,9 @@
 
 ;;;; Tips
 
-;; + You can customize settings in the `package-name' group (not yet).
+;; You can customize settings in the `package-name' group:
+
+;; `obsidian-tools-time-string-format' : Time string format.
 
 ;;;; Credits
 
@@ -74,6 +76,10 @@
 (require 'yaml)
 
 ;;;; Customization
+
+(defcustom obsidian-tools-time-string-format "%Y-%m-%d %H:%M:%S%z"
+  "Time string format."
+  :type 'string)
 
 ;;;; Variables
 
