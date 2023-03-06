@@ -181,6 +181,17 @@ contain front matter, the function signals an error."
         (buffer-substring-no-properties fm-start fm-end)
       (user-error "There is no front matter in this file!"))))
 
+(defun obsidian-tools--buffer-replace-yaml (yaml-text)
+  "Replace the YAML front matter in the current buffer with YAML-TEXT."
+  (let ((fm-start (obsidian-tools--buffer-yaml-start))
+        (fm-end (obsidian-tools--buffer-yaml-end)))
+    (if (> fm-end fm-start)
+        (save-excursion
+          (goto-char fm-start)
+          (delete-region fm-start fm-end)
+          (insert yaml-text))
+      (user-error "There is no front matter in this file!"))))
+
 ;;;; Footer
 
 (provide 'obsidian-tools)
