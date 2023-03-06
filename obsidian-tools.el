@@ -164,20 +164,20 @@ If no front matter is found, return nil."
                (re-search-forward "^---" nil t 2))
       (- (point) 3))))
 
-(defun obsidian-tools--buffer-yaml ()
-  "Return front matter string.
+(defun obsidian-tools--buffer-yaml (&optional start end)
+"Return the YAML front matter at the beginning of the current buffer.
 
-The function returns the YAML front matter at the beginning of
-the current buffer.  The front matter is expected to be enclosed
-in a pair of '---' lines at the beginning of the buffer.  If the
-buffer does not contain front matter, signal an error.
+If START and END are specified, the function returns the front
+matter within those bounds. Otherwise, the function uses
+`'obsidian--buffer-yaml-start' and `obsidian--buffer-yaml-end' to
+determine the boundaries of the front matter.
 
-The function uses `obsidian--buffer-yaml-start' and
-`obsidian--buffer-yaml-end' to determine the boundaries
-of the front matter."
-  (let ((fm-start (obsidian-tools--buffer-yaml-start))
-        (fm-end (obsidian-tools--buffer-yaml-end)))
-    (if (and fm-start fm-end (> fm-end fm-start))
+The front matter is expected to be enclosed in a pair of '---'
+lines at the beginning of the buffer. If the buffer does not
+contain front matter, the function signals an error."
+  (let ((fm-start (or start (obsidian-tools--buffer-yaml-start)))
+        (fm-end (or end (obsidian-tools--buffer-yaml-end))))
+    (if (> fm-end fm-start)
         (buffer-substring-no-properties fm-start fm-end)
       (user-error "There is no front matter in this file!"))))
 
