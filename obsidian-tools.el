@@ -192,6 +192,53 @@ contain front matter, the function signals an error."
           (insert yaml-text))
       (user-error "There is no front matter in this file!"))))
 
+(defun obsidian-tools--buffer-update-yaml-key-value (key value &optional update-time)
+  "Update the VALUE of KEY in the YAML front matter of the current buffer."
+
+  (cond ((eq obsidian-tools-storage-type 'alist)
+         (let ((fm-alist (yaml-parse-string (obsidian-tools--buffer-yaml)
+                                            :object-type 'alist)))
+           (if fm-alist
+               (progn
+                 (setcdr (assoc key fm-alist) value)
+                 (when update-time
+                   (let ((date-string (format-time-string "%Y-%m-%d %H:%M:%S%z")))
+                     (setcdr (assoc 'updated fm-alist) date-string)))
+                 (let* ((fm-string-0 (yaml-encode fm-alist))
+                        ;; Remove initial newline character if present, and add
+                        ;; newline character at the end of the string
+                        (fm-string (concat
+                                    (string-trim fm-string-0 "\n" nil)
+                                    "\n")))
+                 (obsidian-tools--buffer-replace-yaml fm-string))
+                 (message "Front matter updated: '%s: %s'" key value))
+             (user-error "There is no front matter in this file!"))))
+
+        ((eq obsidian-tools-storage-type 'hash-table)
+         (let ((fm-hash (yaml-parse-string (obsidian-tools--buffer-yaml))))   ; TODO: does the hash table returned by yaml-parse-string use 'equal for test?
+           (if fm-hash
+               (let ((fm-hash-copy (make-hash-table :test 'equal))
+                     fm-string)
+                 ;; In order to preserve the order of the fields in the front
+                 ;; matter we create a copy of the original hash table by iterating
+                 ;; over its keys and values, and later use the same order with
+                 ;; `maphash' to insert the fields back into the front matter.
+                 (cl-loop for k in (hash-table-keys fm-hash)
+                          for v in (hash-table-values fm-hash)
+                          do (puthash k v fm-hash-copy))
+                 (puthash key value fm-hash-copy)
+                 (when update-time
+                   (let ((date-string (format-time-string "%Y-%m-%d %H:%M:%S%z")))
+                     (puthash 'updated date-string fm-hash-copy)))
+                 (maphash (lambda (k v)
+                            ;; (insert (format "%s: %s\n" k v)))
+                            ;; (setq fm-string (cons (format "%s: %s\n" k v) fm-string)))
+                            (setq fm-string (concat fm-string (format "%s: %s\n" k v))))   ; TODO: dates should be double-quoted
+                          fm-hash-copy)
+                 (obsidian-tools--buffer-replace-yaml fm-string)
+                 (message "Front matter updated: '%s: %s'" key value))
+             (user-error "There is no front matter in this file!"))))))
+
 ;;;; Footer
 
 (provide 'obsidian-tools)
