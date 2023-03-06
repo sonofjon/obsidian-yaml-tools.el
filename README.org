@@ -58,7 +58,7 @@ Run one of these commands:
 
   + =obsidian-tools-update-yaml-title-from-filename= : Update the title in the YAML front matter to match the current filename.
 
-  + =obsidian-tools-yaml-title-to-file=' : Rename file to match the front matter title.
+  + =obsidian-tools-update-filename-from-yaml-title= : Rename the current file to match the title in the YAML front matter.
 
   + =obsidian-tools-update-yaml-date= : Update the date in the YAML front matter.
 

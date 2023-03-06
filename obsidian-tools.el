@@ -54,7 +54,7 @@
 
 ;; `obsidian-tools-update-yaml-title-from-filename' : Update the title in the YAML front matter to match the current filename.
 
-;; `obsidian-tools-yaml-title-to-file' : Rename file to match the front matter title.
+;; `obsidian-tools-update-filename-from-yaml-title' : Rename the current file to match the title in the YAML front matter.
 
 ;; `obsidian-tools-update-yaml-date' : Update the date in the YAML front matter.
 
@@ -107,11 +107,8 @@ matter to match the current filename."
     (obsidian-tools--buffer-update-yaml-key-value 'title base-name t)))
 
 ;;;###autoload
-(defun obsidian-tools-yaml-title-to-file ()
-  "Rename file to match the front matter title.
-
-The function renames the current file using the title in the YAML
-front matter as filename."
+(defun obsidian-tools-update-filename-from-yaml-title ()
+  "Rename the current file to match the title in the YAML front matter."
   (interactive)
   (let ((fm-hash (yaml-parse-string (obsidian-tools--buffer-yaml))))
     (if fm-hash
