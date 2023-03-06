@@ -56,6 +56,8 @@
 
 ;; `obsidian-tools-yaml-title-to-file' : Rename file to match the front matter title.
 
+;; `obsidian-tools-update-yaml-date' : Update the date in the YAML front matter.
+
 ;;;; Tips
 
 ;; You can customize settings in the `package-name' group:
@@ -138,6 +140,16 @@ front matter as filename."
         (let ((title (gethash 'title fm-hash)))
           (my/rename-file-and-buffer (concat title ".md")))
       (user-error "There is no front matter in this file!"))))
+
+;;;###autoload
+(defun obsidian-tools-update-yaml-date ()
+  "Update the date in the YAML front matter.
+
+The function updates the \\='updated\\=' field in the YAML front
+matter to match the current time."
+  (interactive)
+  (let ((date-string (format-time-string "%Y-%m-%d %H:%M:%S%z")))
+    (obsidian-tools--buffer-update-yaml-key-value 'updated date-string)))
 
 ;;;; Functions
 

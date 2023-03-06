@@ -60,6 +60,8 @@ Run one of these commands:
 
   + =obsidian-tools-yaml-title-to-file=' : Rename file to match the front matter title.
 
+  + =obsidian-tools-update-yaml-date= : Update the date in the YAML front matter.
+
 ** Tips
 
 You can customize settings in the =package-name= group.
