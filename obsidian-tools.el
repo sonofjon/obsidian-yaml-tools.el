@@ -62,6 +62,8 @@
 
 ;; `obsidian-tools-time-string-format' : Time string format.
 
+;; `obsidian-tools-storage-type' : Data structure for internal storage of YAML.
+
 ;;;; Credits
 
 ;; This package was inspired by: obsidian.el[1].
@@ -80,6 +82,11 @@
 (defcustom obsidian-tools-time-string-format "%Y-%m-%d %H:%M:%S%z"
   "Time string format."
   :type 'string)
+
+(defcustom obsidian-tools-storage-type 'alist
+  "Data structure for internal storage of YAML."
+  :type 'symbol
+  :options '('alist 'hash-table))
 
 ;;;; Variables
 

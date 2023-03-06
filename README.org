@@ -66,6 +66,8 @@ You can customize settings in the =package-name= group.
 
   + =obsidian-tools-time-string-format= : Time string format.
 
+  + =obsidian-tools-storage-type= : Data structure for internal storage of YAML.
+
 * Changelog
 :PROPERTIES:
 :TOC:      :depth 0
