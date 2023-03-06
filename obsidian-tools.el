@@ -74,6 +74,7 @@
 
 ;; TODO:
 ;;   - Add my/rename-file-and-buffer
+;;   - Refactor obsidian-tools to obsidian-yaml-tools (oyt)
 ;;
 
 ;;; Code:
