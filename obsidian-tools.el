@@ -98,16 +98,6 @@
 ;;;; Commands
 
 ;;;###autoload
-(defun obsidian-tools-update-yaml-title-from-filename ()
-  "Update the title in the YAML front matter to match the current filename.
-
-The function updates the \\='title\\=' field in the YAML front
-matter to match the current filename."
-  (interactive)
-  (let ((base-name (file-name-base (buffer-file-name))))
-    (obsidian-tools--buffer-update-yaml-key-value 'title base-name t)))
-
-;;;###autoload
 (defun obsidian-tools-update-filename-from-yaml-title ()
   "Rename the current file to match the title in the YAML front matter."
   (interactive)
@@ -116,6 +106,16 @@ matter to match the current filename."
         (let ((title (gethash 'title fm-hash)))
           (my/rename-file-and-buffer (concat title ".md")))
       (user-error "There is no front matter in this file!"))))
+
+;;;###autoload
+(defun obsidian-tools-update-yaml-title-from-filename ()
+  "Update the title in the YAML front matter to match the current filename.
+
+The function updates the \\='title\\=' field in the YAML front
+matter to match the current filename."
+  (interactive)
+  (let ((base-name (file-name-base (buffer-file-name))))
+    (obsidian-tools--buffer-update-yaml-key-value 'title base-name t)))
 
 ;;;###autoload
 (defun obsidian-tools-update-yaml-date ()
