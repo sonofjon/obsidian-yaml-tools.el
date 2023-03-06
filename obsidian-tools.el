@@ -52,7 +52,7 @@
 
 ;; Run one of these commands:
 
-;; `obsidian-tools-file-to-yaml-title' : Copy title from filename to front matter.
+;; `obsidian-tools-update-yaml-title-from-filename' : Update the title in the YAML front matter to match the current filename.
 
 ;; `obsidian-tools-yaml-title-to-file' : Rename file to match the front matter title.
 
@@ -97,36 +97,14 @@
 ;;;; Commands
 
 ;;;###autoload
-(defun obsidian-tools-file-to-yaml-title ()
-  "Copy title from filename to front matter.
+(defun obsidian-tools-update-yaml-title-from-filename ()
+  "Update the title in the YAML front matter to match the current filename.
 
-The function changes the title in the YAML front matter of the
-current buffer to match the filename of the buffer.
-
-The function parses the YAML front matter using
-`yaml-parse-string', replaces the title field with the filename,
-and then rewrites the YAML front matter at the beginning of the
-buffer, preserving the original order of the fields."
+The function updates the \\='title\\=' field in the YAML front
+matter to match the current filename."
   (interactive)
-  (let* ((base (file-name-base (buffer-file-name)))
-         (fm-hash (yaml-parse-string (obsidian-tools--buffer-yaml))))
-    (if fm-hash
-          ;; In order to preserve the order of the fields in the front
-          ;; matter we create a copy of the original hash table by iterating
-          ;; over its keys and values, and later use the same order with
-          ;; `maphash' to insert the fields bask into the front matter.
-        (let ((fm-hash-copy (make-hash-table :test 'equal)))
-          (cl-loop for key in (hash-table-keys fm-hash)
-                   for value in (hash-table-values fm-hash)
-                   do (puthash key value fm-hash-copy))
-          (puthash 'title base fm-hash-copy)
-          (goto-char fm-start)
-          (delete-region fm-start fm-end)
-          (maphash (lambda (key value)
-                     (insert (format "%s: %s\n" key value)))
-                   fm-hash-copy)
-          (message "Front matter title updated: '%s'" base))
-      (user-error "There is no front matter in this file!"))))
+  (let ((base-name (file-name-base (buffer-file-name))))
+    (obsidian-tools--buffer-update-yaml-key-value 'title base-name t)))
 
 ;;;###autoload
 (defun obsidian-tools-yaml-title-to-file ()

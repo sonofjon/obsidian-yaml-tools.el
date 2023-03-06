@@ -56,7 +56,7 @@ Then put this file in your load-path, and put this in your init file:
 
 Run one of these commands:
 
-  + =obsidian-tools-file-to-yaml-title= : Copy title from filename to front matter.
+  + =obsidian-tools-update-yaml-title-from-filename= : Update the title in the YAML front matter to match the current filename.
 
   + =obsidian-tools-yaml-title-to-file=' : Rename file to match the front matter title.
 
