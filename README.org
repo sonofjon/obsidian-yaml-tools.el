@@ -1,4 +1,4 @@
-#+TITLE: obsidian-tools
+#+TITLE: obsidian-yaml-tools
 
 #+PROPERTY: LOGGING nil
 
@@ -46,7 +46,7 @@ Install these required packages:
 Then put this file in your load-path, and put this in your init file:
 
   #+BEGIN_SRC elisp
-(require 'obsidian-tools)
+(require 'obsidian-yaml-tools)
   #+END_SRC
 
 * Usage

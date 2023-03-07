@@ -1,9 +1,9 @@
-;;; obsidian-tools.el --- Obsidian Notes tools -*- coding: utf-8; lexical-binding: t; -*-
+;;; obsidian-yaml-tools.el --- Obsidian YAML tools -*- coding: utf-8; lexical-binding: t; -*-
 
 ;; Copyright (c) 2023 Andreas Jonsson
 
 ;; Author: Andreas Jonsson <ajdev8@gmail.com>
-;; URL: https://github.com/sonofjon/obsidian-tools.el
+;; URL: https://github.com/sonofjon/obsidian-yaml-tools.el
 ;; Package-Version:
 ;; Package-Commit:
 ;; Package-Requires: ((emacs "27.2") (yaml "0.5.1"))
@@ -29,7 +29,7 @@
 
 ;;; Commentary:
 
-;; Obsidian-tools.el provides a number of useful functions that let you
+;; Obsidian-yaml-tools.el provides a number of useful functions that let you
 ;; manipulate the front matter of Obsidian notes.
 
 ;;;; Installation
@@ -46,7 +46,7 @@
 
 ;; Then put this file in your load-path, and put this in your init file:
 
-;; (require 'obsidian-tools)
+;; (require 'obsidian-yaml-tools)
 
 ;;;; Usage
 
@@ -229,6 +229,6 @@ contain front matter, the function signals an error."
 
 ;;;; Footer
 
-(provide 'obsidian-tools)
+(provide 'obsidian-yaml-tools)
 
-;;; obsidian-tools.el ends here
+;;; obsidian-yaml-tools.el ends here
