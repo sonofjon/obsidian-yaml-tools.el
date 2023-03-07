@@ -124,8 +124,8 @@ matter to match the current filename."
 The function updates the \\='updated\\=' field in the YAML front
 matter to match the current time."
   (interactive)
-  (let ((date-string (format-time-string "%Y-%m-%d %H:%M:%S%z")))
-    (obsidian-tools--buffer-update-yaml-key-value 'updated date-string)))
+  (obsidian-tools--buffer-update-yaml-key-value
+   'updated obsidian-tools-time-string-format))
 
 ;;;; Functions
 
@@ -190,8 +190,8 @@ contain front matter, the function signals an error."
                (progn
                  (setcdr (assoc key fm-alist) value)
                  (when update-time
-                   (let ((date-string (format-time-string "%Y-%m-%d %H:%M:%S%z")))
-                     (setcdr (assoc 'updated fm-alist) date-string)))
+                   (setcdr (assoc 'updated fm-alist)
+                           obsidian-tools-time-string-format))
                  (let* ((fm-string-0 (yaml-encode fm-alist))
                         ;; Remove initial newline character if present, and add
                         ;; newline character at the end of the string
@@ -216,8 +216,8 @@ contain front matter, the function signals an error."
                           do (puthash k v fm-hash-copy))
                  (puthash key value fm-hash-copy)
                  (when update-time
-                   (let ((date-string (format-time-string "%Y-%m-%d %H:%M:%S%z")))
-                     (puthash 'updated date-string fm-hash-copy)))
+                   (puthash 'updated obsidian-tools-time-string-format
+                             fm-hash-copy))
                  (maphash (lambda (k v)
                             ;; (insert (format "%s: %s\n" k v)))
                             ;; (setq fm-string (cons (format "%s: %s\n" k v) fm-string)))
