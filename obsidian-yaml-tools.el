@@ -134,21 +134,23 @@ matter to match the current time."
 (defun oyt--buffer-yaml-start ()
   "Return the starting position of the YAML front matter in the current buffer.
 
-If no front matter is found, return nil."
+If no front matter is found, signal an error."
   (save-excursion
     (goto-char (point-min))
-    (when (and (looking-at "^---") (forward-line))
-      (point))))
+    (if (and (looking-at "^---") (forward-line))
+        (point)
+      (error "No YAML front matter found."))))
 
 (defun oyt--buffer-yaml-end ()
   "Return the ending position of the YAML front matter in the current buffer.
 
-If no front matter is found, return nil."
+If no front matter is found, signal an error."
   (save-excursion
     (goto-char (point-min))
-    (when (and (looking-at "^---")
-               (re-search-forward "^---" nil t 2))
-      (- (point) 3))))
+    (if (and (looking-at "^---")
+             (search-forward-regexp "^---" nil t 2))
+        (- (point) 3)
+      (error "No YAML front matter found."))))
 
 (defun oyt--buffer-yaml (&optional start end)
 "Return the YAML front matter at the beginning of the current buffer.
