@@ -52,19 +52,19 @@
 
 ;; Run one of these commands:
 
-;; `obsidian-tools-update-yaml-title-from-filename' : Update the title in the YAML front matter to match the current filename.
+;; `oyt-update-yaml-title-from-filename' : Update the title in the YAML front matter to match the current filename.
 
-;; `obsidian-tools-update-filename-from-yaml-title' : Rename the current file to match the title in the YAML front matter.
+;; `oyt-update-filename-from-yaml-title' : Rename the current file to match the title in the YAML front matter.
 
-;; `obsidian-tools-update-yaml-date' : Update the date in the YAML front matter.
+;; `oyt-update-yaml-date' : Update the date in the YAML front matter.
 
 ;;;; Tips
 
 ;; You can customize settings in the `package-name' group:
 
-;; `obsidian-tools-time-string-format' : Time string format.
+;; `oyt-time-string-format' : Time string format.
 
-;; `obsidian-tools-storage-type' : Data structure for internal storage of YAML.
+;; `oyt-storage-type' : Data structure for internal storage of YAML.
 
 ;;;; Credits
 
@@ -74,19 +74,17 @@
 
 ;; TODO:
 ;;   - Add my/rename-file-and-buffer
-;;   - Refactor obsidian-tools to obsidian-yaml-tools (oyt)
-;;
 
 ;;; Code:
 (require 'yaml)
 
 ;;;; Customization
 
-(defcustom obsidian-tools-time-string-format "%Y-%m-%d %H:%M:%S%z"
+(defcustom oyt-time-string-format "%Y-%m-%d %H:%M:%S%z"
   "Time string format."
   :type 'string)
 
-(defcustom obsidian-tools-storage-type 'alist
+(defcustom oyt-storage-type 'alist
   "Data structure for internal storage of YAML."
   :type 'symbol
   :options '('alist 'hash-table))
@@ -98,34 +96,34 @@
 ;;;; Commands
 
 ;;;###autoload
-(defun obsidian-tools-update-filename-from-yaml-title ()
+(defun oyt-update-filename-from-yaml-title ()
   "Rename the current file to match the title in the YAML front matter."
   (interactive)
-  (let ((fm-hash (yaml-parse-string (obsidian-tools--buffer-yaml))))
+  (let ((fm-hash (yaml-parse-string (oyt--buffer-yaml))))
     (if fm-hash
         (let ((title (gethash 'title fm-hash)))
           (my/rename-file-and-buffer (concat title ".md")))
       (user-error "There is no front matter in this file!"))))
 
 ;;;###autoload
-(defun obsidian-tools-update-yaml-title-from-filename ()
+(defun oyt-update-yaml-title-from-filename ()
   "Update the title in the YAML front matter to match the current filename.
 
 The function updates the \\='title\\=' field in the YAML front
 matter to match the current filename."
   (interactive)
   (let ((base-name (file-name-base (buffer-file-name))))
-    (obsidian-tools--buffer-update-yaml-key-value 'title base-name t)))
+    (oyt--buffer-update-yaml-key-value 'title base-name t)))
 
 ;;;###autoload
-(defun obsidian-tools-update-yaml-date ()
+(defun oyt-update-yaml-date ()
   "Update the date in the YAML front matter.
 
 The function updates the \\='updated\\=' field in the YAML front
 matter to match the current time."
   (interactive)
-  (obsidian-tools--buffer-update-yaml-key-value
-   'updated obsidian-tools-time-string-format))
+  (oyt--buffer-update-yaml-key-value
+   'updated oyt-time-string-format))
 
 ;;;; Functions
 
@@ -133,7 +131,7 @@ matter to match the current time."
 
 ;;;;; Private
 
-(defun obsidian-tools--buffer-yaml-start ()
+(defun oyt--buffer-yaml-start ()
   "Return the starting position of the YAML front matter in the current buffer.
 
 If no front matter is found, return nil."
@@ -142,7 +140,7 @@ If no front matter is found, return nil."
     (when (and (looking-at "^---") (forward-line))
       (point))))
 
-(defun obsidian-tools--buffer-yaml-end ()
+(defun oyt--buffer-yaml-end ()
   "Return the ending position of the YAML front matter in the current buffer.
 
 If no front matter is found, return nil."
@@ -152,7 +150,7 @@ If no front matter is found, return nil."
                (re-search-forward "^---" nil t 2))
       (- (point) 3))))
 
-(defun obsidian-tools--buffer-yaml (&optional start end)
+(defun oyt--buffer-yaml (&optional start end)
 "Return the YAML front matter at the beginning of the current buffer.
 
 If START and END are specified, the function returns the front
@@ -163,16 +161,16 @@ determine the boundaries of the front matter.
 The front matter is expected to be enclosed in a pair of '---'
 lines at the beginning of the buffer. If the buffer does not
 contain front matter, the function signals an error."
-  (let ((fm-start (or start (obsidian-tools--buffer-yaml-start)))
-        (fm-end (or end (obsidian-tools--buffer-yaml-end))))
+  (let ((fm-start (or start (oyt--buffer-yaml-start)))
+        (fm-end (or end (oyt--buffer-yaml-end))))
     (if (> fm-end fm-start)
         (buffer-substring-no-properties fm-start fm-end)
       (user-error "There is no front matter in this file!"))))
 
-(defun obsidian-tools--buffer-replace-yaml (yaml-text)
+(defun oyt--buffer-replace-yaml (yaml-text)
   "Replace the YAML front matter in the current buffer with YAML-TEXT."
-  (let ((fm-start (obsidian-tools--buffer-yaml-start))
-        (fm-end (obsidian-tools--buffer-yaml-end)))
+  (let ((fm-start (oyt--buffer-yaml-start))
+        (fm-end (oyt--buffer-yaml-end)))
     (if (> fm-end fm-start)
         (save-excursion
           (goto-char fm-start)
@@ -180,30 +178,30 @@ contain front matter, the function signals an error."
           (insert yaml-text))
       (user-error "There is no front matter in this file!"))))
 
-(defun obsidian-tools--buffer-update-yaml-key-value (key value &optional update-time)
+(defun oyt--buffer-update-yaml-key-value (key value &optional update-time)
   "Update the VALUE of KEY in the YAML front matter of the current buffer."
 
-  (cond ((eq obsidian-tools-storage-type 'alist)
-         (let ((fm-alist (yaml-parse-string (obsidian-tools--buffer-yaml)
+  (cond ((eq oyt-storage-type 'alist)
+         (let ((fm-alist (yaml-parse-string (oyt--buffer-yaml)
                                             :object-type 'alist)))
            (if fm-alist
                (progn
                  (setcdr (assoc key fm-alist) value)
                  (when update-time
                    (setcdr (assoc 'updated fm-alist)
-                           obsidian-tools-time-string-format))
+                           oyt-time-string-format))
                  (let* ((fm-string-0 (yaml-encode fm-alist))
                         ;; Remove initial newline character if present, and add
                         ;; newline character at the end of the string
                         (fm-string (concat
                                     (string-trim fm-string-0 "\n" nil)
                                     "\n")))
-                 (obsidian-tools--buffer-replace-yaml fm-string))
+                 (oyt--buffer-replace-yaml fm-string))
                  (message "Front matter updated: '%s: %s'" key value))
              (user-error "There is no front matter in this file!"))))
 
-        ((eq obsidian-tools-storage-type 'hash-table)
-         (let ((fm-hash (yaml-parse-string (obsidian-tools--buffer-yaml))))   ; TODO: does the hash table returned by yaml-parse-string use 'equal for test?
+        ((eq oyt-storage-type 'hash-table)
+         (let ((fm-hash (yaml-parse-string (oyt--buffer-yaml))))   ; TODO: does the hash table returned by yaml-parse-string use 'equal for test?
            (if fm-hash
                (let ((fm-hash-copy (make-hash-table :test 'equal))
                      fm-string)
@@ -216,14 +214,14 @@ contain front matter, the function signals an error."
                           do (puthash k v fm-hash-copy))
                  (puthash key value fm-hash-copy)
                  (when update-time
-                   (puthash 'updated obsidian-tools-time-string-format
+                   (puthash 'updated oyt-time-string-format
                              fm-hash-copy))
                  (maphash (lambda (k v)
                             ;; (insert (format "%s: %s\n" k v)))
                             ;; (setq fm-string (cons (format "%s: %s\n" k v) fm-string)))
                             (setq fm-string (concat fm-string (format "%s: %s\n" k v))))   ; TODO: dates should be double-quoted
                           fm-hash-copy)
-                 (obsidian-tools--buffer-replace-yaml fm-string)
+                 (oyt--buffer-replace-yaml fm-string)
                  (message "Front matter updated: '%s: %s'" key value))
              (user-error "There is no front matter in this file!"))))))
 

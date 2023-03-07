@@ -56,19 +56,19 @@ Then put this file in your load-path, and put this in your init file:
 
 Run one of these commands:
 
-  + =obsidian-tools-update-yaml-title-from-filename= : Update the title in the YAML front matter to match the current filename.
+  + =oyt-update-yaml-title-from-filename= : Update the title in the YAML front matter to match the current filename.
 
-  + =obsidian-tools-update-filename-from-yaml-title= : Rename the current file to match the title in the YAML front matter.
+  + =oyt-update-filename-from-yaml-title= : Rename the current file to match the title in the YAML front matter.
 
-  + =obsidian-tools-update-yaml-date= : Update the date in the YAML front matter.
+  + =oyt-update-yaml-date= : Update the date in the YAML front matter.
 
 ** Tips
 
 You can customize settings in the =package-name= group.
 
-  + =obsidian-tools-time-string-format= : Time string format.
+  + =oyt-time-string-format= : Time string format.
 
-  + =obsidian-tools-storage-type= : Data structure for internal storage of YAML.
+  + =oyt-storage-type= : Data structure for internal storage of YAML.
 
 * Changelog
 :PROPERTIES:
