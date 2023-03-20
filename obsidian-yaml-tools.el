@@ -166,7 +166,7 @@ contain front matter, the function signals an error."
         (fm-end (or end (oyt--buffer-yaml-end))))
     (if (> fm-end fm-start)
         (buffer-substring-no-properties fm-start fm-end)
-      (user-error "There is no front matter in this file!"))))
+      (user-error "There is no YAML front matter in this file!"))))
 
 (defun oyt--buffer-replace-yaml (yaml-text)
   "Replace the YAML front matter in the current buffer with YAML-TEXT."
