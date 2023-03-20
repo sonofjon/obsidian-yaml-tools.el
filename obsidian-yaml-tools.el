@@ -180,7 +180,13 @@ contain front matter, the function signals an error."
       (user-error "There is no front matter in this file!"))))
 
 (defun oyt--buffer-update-yaml-key-value (key value &optional update-time)
-  "Update the VALUE of KEY in the YAML front matter of the current buffer."
+  "Update the VALUE of KEY in the YAML front matter of the current buffer.
+
+If KEY does not exist in the front matter, it will be added with the
+given VALUE.
+
+If UPDATE-TIME is non-nil, the 'updated' field in the front matter
+will be updated with the current time."
 
   (cond ((eq oyt-storage-type 'alist)
          (if-let ((fm-alist (yaml-parse-string (oyt--buffer-yaml)
