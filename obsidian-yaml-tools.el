@@ -99,11 +99,10 @@
 (defun oyt-update-filename-from-yaml-title ()
   "Rename the current file to match the title in the YAML front matter."
   (interactive)
-  (let ((fm-hash (yaml-parse-string (oyt--buffer-yaml))))
-    (if fm-hash
-        (let ((title (gethash 'title fm-hash)))
-          (my/rename-file-and-buffer (concat title ".md")))
-      (user-error "There is no front matter in this file!"))))
+  (if-let ((fm-hash (yaml-parse-string (oyt--buffer-yaml))))
+      (let ((title (gethash 'title fm-hash)))
+        (my/rename-file-and-buffer (concat title ".md")))
+    (user-error "There is no front matter in this file!")))
 
 ;;;###autoload
 (defun oyt-update-yaml-title-from-filename ()
@@ -184,48 +183,53 @@ contain front matter, the function signals an error."
   "Update the VALUE of KEY in the YAML front matter of the current buffer."
 
   (cond ((eq oyt-storage-type 'alist)
-         (let ((fm-alist (yaml-parse-string (oyt--buffer-yaml)
-                                            :object-type 'alist)))
-           (if fm-alist
-               (progn
-                 (setcdr (assoc key fm-alist) value)
-                 (when update-time
-                   (setcdr (assoc 'updated fm-alist)
-                           oyt-time-string-format))
-                 (let* ((fm-string-0 (yaml-encode fm-alist))
-                        ;; Remove initial newline character if present, and add
-                        ;; newline character at the end of the string
-                        (fm-string (concat
-                                    (string-trim fm-string-0 "\n" nil)
-                                    "\n")))
+         (if-let ((fm-alist (yaml-parse-string (oyt--buffer-yaml)
+                                               :object-type 'alist)))
+             (progn
+               ;; Update the VALUE of KEY in the alist
+               (if (assoc key fm-alist)
+                   (setcdr (assoc key fm-alist) value)
+                 (push (cons key value) fm-alist))
+               ;; Update the 'updated' field in the alist if requested
+               (when update-time
+                 (if (assoc 'updated fm-alist)
+                     (setcdr (assoc 'updated fm-alist) oyt-time-string-format)
+                   (push (cons 'updated oyt-time-string-format) fm-alist)))
+               (let* ((fm-string-0 (yaml-encode fm-alist))
+                      ;; Remove initial newline character if present, and add
+                      ;; newline character at the end of the string
+                      (fm-string (concat
+                                  (string-trim fm-string-0 "\n" nil)
+                                  "\n")))
                  (oyt--buffer-replace-yaml fm-string))
-                 (message "Front matter updated: '%s: %s'" key value))
-             (user-error "There is no front matter in this file!"))))
+               (message "Front matter updated: '%s: %s'" key value))
+           (user-error "There is no front matter in this file!")))
 
         ((eq oyt-storage-type 'hash-table)
-         (let ((fm-hash (yaml-parse-string (oyt--buffer-yaml))))   ; TODO: does the hash table returned by yaml-parse-string use 'equal for test?
-           (if fm-hash
-               (let ((fm-hash-copy (make-hash-table :test 'equal))
-                     fm-string)
-                 ;; In order to preserve the order of the fields in the front
-                 ;; matter we create a copy of the original hash table by iterating
-                 ;; over its keys and values, and later use the same order with
-                 ;; `maphash' to insert the fields back into the front matter.
-                 (cl-loop for k in (hash-table-keys fm-hash)
-                          for v in (hash-table-values fm-hash)
-                          do (puthash k v fm-hash-copy))
-                 (puthash key value fm-hash-copy)
-                 (when update-time
-                   (puthash 'updated oyt-time-string-format
-                             fm-hash-copy))
-                 (maphash (lambda (k v)
-                            ;; (insert (format "%s: %s\n" k v)))
-                            ;; (setq fm-string (cons (format "%s: %s\n" k v) fm-string)))
-                            (setq fm-string (concat fm-string (format "%s: %s\n" k v))))   ; TODO: dates should be double-quoted
-                          fm-hash-copy)
-                 (oyt--buffer-replace-yaml fm-string)
-                 (message "Front matter updated: '%s: %s'" key value))
-             (user-error "There is no front matter in this file!"))))))
+         (if-let ((fm-hash (yaml-parse-string (oyt--buffer-yaml))))
+             (let ((fm-hash-copy (make-hash-table :test 'equal))
+                   fm-string)
+               ;; In order to preserve the order of the fields in the
+               ;; front matter we create a copy of the original hash table
+               ;; by iterating over its keys and values, and later use the
+               ;; same order with `maphash' to insert the fields back into
+               ;; the front matter.
+               (cl-loop for k in (hash-table-keys fm-hash)
+                        for v in (hash-table-values fm-hash)
+                        do (puthash k v fm-hash-copy))
+               (puthash key value fm-hash-copy)
+               (when update-time
+                 (puthash 'updated oyt-time-string-format
+                           fm-hash-copy))
+               (maphash (lambda (k v)
+                          (setq fm-string (concat
+                                           fm-string
+                                           (format "%s: %s\n" k v))))
+                                        ; TODO: dates should be double-quoted
+                        fm-hash-copy)
+               (oyt--buffer-replace-yaml fm-string)
+               (message "Front matter updated: '%s: %s'" key value))
+           (user-error "There is no front matter in this file!")))))
 
 ;;;; Footer
 
