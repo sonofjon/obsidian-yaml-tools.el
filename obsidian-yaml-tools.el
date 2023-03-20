@@ -30,7 +30,7 @@
 ;;; Commentary:
 
 ;; Obsidian-yaml-tools.el provides a number of useful functions that let you
-;; manipulate the front matter of Obsidian notes.
+;; manipulate the YAML front matter of Obsidian notes.
 
 ;;;; Installation
 
