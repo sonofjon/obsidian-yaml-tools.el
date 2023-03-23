@@ -81,11 +81,11 @@
 ;;;; Customization
 
 (defcustom oyt-time-string-format "%Y-%m-%d %H:%M:%S%z"
-  "Time string format."
+  "Format for how time strings are displayed."
   :type 'string)
 
 (defcustom oyt-storage-type 'alist
-  "Data structure for internal storage of YAML."
+  "Data structure for internal storage of YAML data."
   :type 'symbol
   :options '(alist hash-table))
 
