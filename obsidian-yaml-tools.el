@@ -87,7 +87,7 @@
 (defcustom oyt-storage-type 'alist
   "Data structure for internal storage of YAML."
   :type 'symbol
-  :options '('alist 'hash-table))
+  :options '(alist hash-table))
 
 ;;;; Variables
 
