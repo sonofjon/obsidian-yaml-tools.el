@@ -185,7 +185,7 @@ contain front matter, the function signals an error."
 If KEY does not exist in the front matter, it will be added with the
 given VALUE.
 
-If UPDATE-TIME is non-nil, the 'updated' field in the front matter
+If UPDATE-TIME is non-nil, the \\='updated\\=' field in the front matter
 will be updated with the current time."
 
   (cond ((eq oyt-storage-type 'alist)
