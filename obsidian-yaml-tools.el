@@ -80,12 +80,19 @@
 
 ;;;; Customization
 
+(defgroup obsidian-yaml-tools nil
+  "Tools for working with YAML in Obsidian notes."
+  :group 'text
+  :link '(url-link :tag "GitHub" "https://github.com/sonofjon/obsidian-yaml-tools.el"))
+
 (defcustom oyt-time-string-format "%Y-%m-%d %H:%M:%S%z"
   "Format for how time strings are displayed."
+  :group 'obsidian-yaml-tools
   :type 'string)
 
 (defcustom oyt-storage-type 'alist
   "Data structure for internal storage of YAML data."
+  :group 'obsidian-yaml-tools
   :type 'symbol
   :options '(alist hash-table))
 
