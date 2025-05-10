@@ -72,9 +72,6 @@
 ;;
 ;;  [1] https://github.com./licht1stein/obsidian.el
 
-;; TODO:
-;;   - Add my/rename-file-and-buffer
-
 ;;; Code:
 (require 'yaml)
 
@@ -108,7 +105,7 @@
   (interactive)
   (if-let ((yaml-hash (yaml-parse-string (oyt--buffer-yaml))))
       (let ((title (gethash 'title yaml-hash)))
-        (my/rename-file-and-buffer (concat title ".md")))
+        (my/rename-file-and-buffer (concat title ".md")))   ; TODO: Replace with rename-visited-file
     (user-error "There is no front matter in this file!")))
 
 ;;;###autoload
